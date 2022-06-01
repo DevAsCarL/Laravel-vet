@@ -1,6 +1,6 @@
 <div class="d-flex gap-2 flex-wrap ">
 
-    <a href="{{ route('users.edit',$id)}}" class="btn btn-info">Editar</a>
+    <a href="{{ route('users.show',$id)}}" class="btn btn-info">Editar</a>
         
     <form action="{{ route('users.destroy',$id)}}" method="post">
         @csrf

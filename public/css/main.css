@@ -1,0 +1,223 @@
+@import url(https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap);
+body{
+  font-family: 'Cairo', sans-serif;
+}
+
+:root{
+    --primaryColor:#2A332E;
+    --primaryColorB:rgba(0, 0, 0, 0.125);
+    --secondaryColor:white;
+    --tertiaryColor:#D3FBD8;
+    --tertiaryColorB:#d3fbd8cb;
+    --fourthColor:#76BD57;
+    --specialColor:rgba(252,161,71,1);
+}
+
+.image{
+    height:100%;
+    width:100%;
+    object-fit: cover;
+    object-position: 80% 60%;
+
+}
+.main__container{
+    overflow: hidden;
+    height:40rem;
+    position:relative;
+}
+
+.image__container::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:0 auto;
+    background-color: var(--tertiaryColor);
+    opacity: 0.7;
+    background-image: radial-gradient(var(--fourthColor) 0.65px, var(--tertiaryColor) 0.65px);
+    background-size: 13px 13px;
+    z-index: -1;
+}
+
+.main__img{
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 96%, 0 100%, 0% 50%);
+}
+
+.main__content{
+    position:absolute;
+    top:2rem;
+    left:0;
+    right:0;
+    bottom: 0;
+    margin: 0 auto;
+    width:35rem;
+    height:15rem;
+    padding:1rem 3rem;
+    overflow:hidden;
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    flex-direction:column;
+    background-color:var(--tertiaryColorB);
+    color: var(--primaryColor);
+    border-radius:0 6rem 0 6rem;
+}
+
+.main__title{
+    font-size:2rem;
+    font-weight:700;
+    text-align:center;
+}
+
+.main__paragraph{
+    font-size:1rem;
+    padding: 0 1rem;
+}
+
+
+
+.button__special{
+    color:var(--secondaryColor);
+    background-color:var(--fourthColor);
+    margin:0 auto;
+}
+.button{
+    width:max-content;
+    height:2rem;
+    padding:1rem;
+    text-decoration: none;
+    border-radius:0 20px 0 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition: width 0.2s, height 0.2s;
+    border: 1px solid black;
+}
+.button:hover{
+    filter:brightness(90%);
+    color:black;
+    width:max-content;
+    height:2.2rem;
+}
+
+
+/*Services*/
+
+.services__container{
+    position: relative;
+    overflow: hidden;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    flex-wrap: wrap;
+}
+
+.services__container::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:0 auto;
+    background-color: var(--tertiaryColor);
+    opacity: 0.7;
+    background-image: radial-gradient(var(--fourthColor) 0.65px, var(--tertiaryColor) 0.65px);
+    background-size: 13px 13px;
+    z-index: -1;
+}
+
+.service__article{
+    position: relative;
+    margin:2rem 1rem;
+}
+
+
+/* CUSTOMER CLIENTE  */
+
+.customers{
+    display:flex;
+    flex-wrap: nowrap;
+    justify-content:center;
+    align-items: center;
+    gap: 1rem;
+    padding:150px 1.5rem;
+    position: relative;
+}
+
+.customers::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:0 auto;
+    background-color: var(--tertiaryColor);
+    opacity: 0.7;
+    background-image: radial-gradient(var(--fourthColor) 0.65px, var(--tertiaryColor) 0.65px);
+    background-size: 13px 13px;
+    z-index: -100;
+}
+
+.customers__container{
+ display:grid;
+}
+
+.customer__container{
+    display:flex;
+    grid-column:2/3;
+    grid-row: 1/2;
+    padding:2rem 1rem;
+    justify-content:center;
+    flex-wrap: wrap-reverse ;
+    align-items:center;
+    border-radius: 50px;
+    background: #D3FBD8;
+    box-shadow:  5px -5px 17px #546456,
+                 -5px 5px 17px #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s;
+}
+
+.customer__container--activated{
+    pointer-events:unset;
+    opacity:1;
+    
+}
+
+.customer__name{
+    display: inline-flex;
+    background-color:var(--specialColor);
+    margin: 2rem 0;
+}
+
+
+.customer__comment{
+    max-width:50rem;
+}
+.customer__image{
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.customer__image img{
+    width:10rem;
+    height:10rem;
+}
+
+.fa-angle-right{
+    font-size:2.5rem;
+    cursor: pointer;
+}
+
+.angle-inverse{
+    transform:rotate(180deg);
+}
+
+.fa-angle-right:hover{
+    font-size:3rem;
+    transition: font-size 0.1s;
+}

@@ -1,5 +1,5 @@
 <?php
-
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\DatatableController;
@@ -7,6 +7,8 @@ use App\Http\Controllers\ManageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DateController;
+use App\Models\Image;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +57,61 @@ Route::middleware('auth')->group(function () {
    
     //modales datatables
     Route::get('Datatable/pet',[DatatableController::class,'pet'])->name('datatable.pet');
+});
+
+
+//GOOGLE OAuth
+Route::get('/auth-google', function () {
+    return Socialite::driver('google')->redirect();
+});
+ 
+Route::get('/google-callback', function () {
+    $user = Socialite::driver('google')->user();
+    // $user->token
+    $userNew = User::updateOrCreate([
+        'external_id' => $user->id,
+    ], [
+        'name' => $user->name,
+        'email' => $user->email,
+        'external_auth' => 'google',
+    ]);
+    
+    // dd($userNew->id);
+    Image::updateOrCreate([
+        'imageable_id' => $userNew->id,
+        'imageable_type' => 'App\Models\User'
+    ], [
+        'url' => $user->avatar,
+    ]);
+
+    Auth::login($userNew); 
+    return redirect('/home');
+
+});
+
+
+Route::get('/auth-facebook', function () {
+    return Socialite::driver('facebook')->redirect();
+});
+ 
+Route::get('/facebook-callback', function () {
+    $user = Socialite::driver('facebook')->user();
+    // dd($user);
+    // $user->token
+    $userNew = User::updateOrCreate([
+        'external_id' => $user->id,
+    ], [
+        'name' => $user->name,
+        'email' => $user->email,
+        'external_auth' => 'facebook',
+    ]);
+    Image::updateOrCreate([
+        'imageable_id' => $userNew->id,
+        'imageable_type' => 'App\Models\User'
+    ], [
+        'url' => $user->avatar,
+    ]);
+    Auth::login($userNew); 
+    return redirect('/home');
+
 });

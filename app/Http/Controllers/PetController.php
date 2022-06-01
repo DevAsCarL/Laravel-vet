@@ -38,30 +38,26 @@ class PetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $request->validate([
             'image' => 'required|image|max:2048',
             'name' => 'required|max:100',
             'description' => 'required|max:400'
         ]);
-        Pet::create([
-            'user_id' => Auth::id(),
-            'name' => $request->name,
-            'description' => $request->description
-            ]
-        );
+        $pet = Pet::create([
+                'user_id' => Auth::id(),
+                'name' => $request->name,
+                'description' => $request->description
+                ]
+            );
 
         if ($request->image) {
             
             $image = $request->file('image')->store('public/images');
             $url =Storage::url($image);
-
-            $user_id = User::find(Auth::id());
-            $imageable_id = $user_id->pets->last()->id;
-
             Image::create([
                 'url' => $url,
-                'imageable_id' => $imageable_id,
+                'imageable_id' => $pet->id,
                 'imageable_type' => 'App\Models\Pet'
                 
             ]);

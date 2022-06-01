@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ModifyUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Image;
-use App\Models\Pet;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
@@ -21,11 +19,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        
         $getUsers = User::all();
-        
-    //    return response()->json($getUsers);
-     
         return view('user.index',compact('getUsers'));
     }
 
@@ -35,69 +29,37 @@ class UserController extends Controller
         return view('auth.register');
     }
 
+    public function show(User $user)
+    {
+        $getRoles = Role::all();
+        return view('user.edit',compact('getRoles','user'));
+    }
+
+    public function edit(ModifyUserRequest $request,User $user)
+    {
+        User::where('id',$user->id)->update($request->except('_token','role'));
+
+        return redirect()->route('users.index');
+    }
+
   
-    public function store(Request $request)
+    public function update(UpdateUserRequest $request,User $user)
     {   
-        
-        
-        User::create(array_merge($request->only('name','email'),['password'=> Hash::make($request->password)]));
-
-        $getUsers = User::all();
-        return view('user.index',compact('getUsers'));
-    }
-
-    public function show($id)
-    {
-        
-    }
-
-    public function edit($id)
-    {
-        $getUser = User::find($id);
-       
-        $getRole = Role::all()->whereNotIn('name',$getUser->getRoleNames());
-        $getRoleid = Role::all()->diff($getRole);
-        // dd($getRoleid);
-        // return response()->json($getRoleid);
-        return view('user.edit',compact('getUser','getRole','getRoleid'));
-    }
-
-  
-    public function update(Request $request,User $user)
-    {
-        // return $request;
-        if (Hash::needsRehash($user->password))
-        {
-            User::where('id',$user->id)->update(array_merge($request->only('name','email','number'),['password' => Hash::make($request->password)]));
-        }else {
-            User::where('id',$user->id)->update($request->only('name','email','number'));
-           
-        }
+        User::where('id',$user->id)->update($request->validated());
 
         $user->syncRoles($request -> role);
         
 
         if($request->image){
-
-            $getImage = $request->file('image')->store('public/images');
-            $url = Storage::url($getImage);
-
-            if($request->user=='create')
-            {
-                Image::create([
-                    'imageable_id' => Auth::id(),
-                    'imageable_type' => 'App\Models\User',
-                    'url' => $url
-                ]);
-
-            }
-            else{
+            $setImage = $request->file('image')->store('/public/images');
+            $url = Storage::url($setImage);
             
-            Image::where('imageable_id',Auth::id()&&'imageable_type','App\Models\User')->update(
-                ['url' => $url
-                ]
-            );
-        } 
+            $image = Image::updateOrCreate([
+                'imageable_id' => $user->id,
+                'imageable_type' => 'App\Models\User',
+            ], [
+                'url' => $url,
+            ]);
         }
         
 
@@ -140,6 +102,7 @@ class UserController extends Controller
         $getPetImage =null;
         if(isset(User::find($getId)->image->url)){
              $getImage = User::find($getId)->image->url;
+            
             }
 
         if(isset(User::find($getId)->pets)){
@@ -147,7 +110,6 @@ class UserController extends Controller
             
             }
 
-        
 
         return view('user.profile',compact('getUser','getPet','getImage','getPetImage'));
     }
