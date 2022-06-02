@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
+use function Psy\debug;
 
 class UserController extends Controller
 {
@@ -30,24 +31,24 @@ class UserController extends Controller
     }
 
     public function show(User $user)
-    {
+    {   
         $getRoles = Role::all();
         return view('user.edit',compact('getRoles','user'));
     }
 
     public function edit(ModifyUserRequest $request,User $user)
     {
-        User::where('id',$user->id)->update($request->except('_token','role'));
-
+        $user->update($request->validated());
+        $user->syncRoles($request -> role);
         return redirect()->route('users.index');
     }
 
   
     public function update(UpdateUserRequest $request,User $user)
     {   
-        User::where('id',$user->id)->update($request->validated());
+        $user->update($request->validated());
 
-        $user->syncRoles($request -> role);
+       
         
 
         if($request->image){
@@ -61,9 +62,7 @@ class UserController extends Controller
                 'url' => $url,
             ]);
         }
-        
 
-        $user->assignRole($request -> role);
 
         $getUsers = User::all();
         
@@ -86,31 +85,8 @@ class UserController extends Controller
     }
 
 
-    public function profile(Request $request){
-
-        // $getPetImage = User::find(Auth::id())->pets;
-        // foreach($getPetImage as $Pet){
-        //     return $Pet->image->url;
-        // }
-        
-        
-        $getId = Auth::id();
-
-        $getUser = User::find($getId);
-        $getPet =null;
-        $getImage =null;
-        $getPetImage =null;
-        if(isset(User::find($getId)->image->url)){
-             $getImage = User::find($getId)->image->url;
-            
-            }
-
-        if(isset(User::find($getId)->pets)){
-            $getPet = User::find($getId)->pets;
-            
-            }
-
-
-        return view('user.profile',compact('getUser','getPet','getImage','getPetImage'));
+    public function profile(){
+  
+        return view('user.profile');
     }
 }

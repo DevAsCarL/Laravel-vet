@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Role;
 
 class ModifyUserRequest extends FormRequest
 {
@@ -14,7 +15,6 @@ class ModifyUserRequest extends FormRequest
      */
     public function authorize()
     {
-        // dd(request()->user->id);
         return true;
     }
 
@@ -34,7 +34,9 @@ class ModifyUserRequest extends FormRequest
                         ->letters()
                         ->mixedCase()
                         ->numbers()
-                        ->symbols()
+                        ->symbols(),
+            'role' => 'required|integer|between:1,'.Role::count()
+            
         ];
     }
 }

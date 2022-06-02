@@ -15,13 +15,13 @@
             @endforelse
         </div>
     </section>
-    
+
     <div class="card w-75 m-auto">
         <h4 class="card-title text-center mt-3">PERFIL</h4>
         <hr>
         <div class="card-body row d-flex flex-direction-column">
 
-            <form action="{{ route('users.update', $getUser->id) }}" method="post" enctype="multipart/form-data"
+            <form action="{{ route('users.update', auth()->user()->id) }}" method="post" enctype="multipart/form-data"
                 class="card-body col-md-8">
                 <section class="row d-flex flex-direction-column section">
                     <div class="col-md-6 border-right d-flex justify-content-center align-items-center">
@@ -29,14 +29,14 @@
                         @csrf
                         <div class="section card-profile">
                             <div class="blob"></div>
-                            @isset($getImage)
-                                <img class="img" src="{{ asset($getImage) }}">
+                            @isset(auth()->user()->image)
+                                <img class="img" src="{{ asset(auth()->user()->image->url) }}">
                             @else
                                 <img class="img"
                                     src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
                                 <input type="hidden" name="user" value="create">
                             @endisset
-                            <h2>{{ $getUser->name }}<br><span>{{ $getUser->email }}</span></h2>
+                            <h2>{{ auth()->user()->name }}<br><span>{{ auth()->user()->email }}</span></h2>
                             <p>
                             <div class="file">
                                 <label for="file-upload" class="buttonUpload">
@@ -51,15 +51,15 @@
                     <div class="col-md-6 py-5">
                         <div class="row mt-3 d-grid gap-2">
                             <div class="col-md-12"><label class="labels">Nombre</label>
-                                <input type="text" class="form-control" name="name" value="{{ $getUser->name }}">
+                                <input type="text" class="form-control" name="name" value="{{ auth()->user()->name }}">
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Número móvil</label>
-                                <input type="text" class="form-control" name="number" value="{{ $getUser->number }}">
+                                <input type="text" class="form-control" name="number" value="{{ auth()->user()->number }}">
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Correo Electrónico</label>
-                                <input type="text" class="form-control" name="email" value="{{ $getUser->email }}"
+                                <input type="text" class="form-control" name="email" value="{{ auth()->user()->email }}"
                                     disabled>
                                 <input type="hidden" class="form-control" name="profile" value="1">
 
@@ -80,29 +80,29 @@
             <div class=" col-md-4 d-flex justify-content-center align-items-center section my-3">
                 <div class="row row-cols-1">
                     <section>
-                        <div id="carouselExampleDark" class="col carousel slide my-3" data-bs-ride="carousel">                      
+                        <div id="carouselExampleDark" class="col carousel slide my-3" data-bs-ride="carousel">
                             <div class="carousel-indicators">
-                                @forelse ($getPet as $pet)
-                                    <button @if ($loop->first) class="active" @endif
-                                        type="button" data-bs-target="#carouselExampleDark"
-                                        data-bs-slide-to="{{ $loop->index }}" 
-                                        aria-current="true"
-                                        aria-label="Slide {{ $loop->index }}">
+                                @forelse (auth()->user()->pets as $pet)
+                                    <button @if ($loop->first) class="active" @endif type="button"
+                                        data-bs-target="#carouselExampleDark" data-bs-slide-to="{{ $loop->index }}"
+                                        aria-current="true" aria-label="Slide {{ $loop->index }}">
                                     </button>
                                 @empty
                                 @endforelse
-                            </div>
-    
+                                </div>
+
                             <div class="carousel-inner">
-                                    @forelse ($getPet as $pet)
-                                        <div class="carousel-item @if ($loop->first) active @endif" data-bs-interval="2000" >
-                                            <img src="{{ asset($pet->image->url) }}"  class="img-fluid d-block w-100" style="object-fit:cover; height:200px">
-                                        </div>
-                                    @empty
-                                    @endforelse
+                                @forelse (auth()->user()->pets as $pet)
+                                    <div class="carousel-item @if ($loop->first) active @endif"
+                                        data-bs-interval="2000">
+                                        <img src="{{ asset($pet->image->url) }}" class="img-fluid d-block w-100"
+                                            style="object-fit:cover; height:200px">
+                                    </div>
+                                @empty
+                                @endforelse
                             </div>
-    
-                            @if(count($getPet)>1)
+
+                            @if (count(auth()->user()->pets) > 1)
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                                     data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -114,12 +114,11 @@
                                     <span class="visually-hidden">Next</span>
                                 </button>
                             @endif
-    
+
                         </div>
                         <div class="col d-flex justify-content-center">
-                            <button type="submit" data-bs-toggle="modal" data-bs-target="#Modal"
-                                class="btn btn-warning" >
-                                <i class="fa fa-plus" aria-hidden="true"></i>  Añadir Mascota
+                            <button type="submit" data-bs-toggle="modal" data-bs-target="#Modal" class="btn btn-warning">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Añadir Mascota
                             </button>
                         </div>
                     </section>

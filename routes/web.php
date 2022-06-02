@@ -29,21 +29,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 Route::view('user', 'user.store');
-
-Route::resource('users',App\Http\Controllers\UserController::class)->middleware('auth');
 
 Route::resource('citas', DateController::class);
 
 Route::middleware('auth')->group(function () {
     
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('users',App\Http\Controllers\UserController::class);
+    
     Route::resource('manage', ManageController::class);
     Route::resource('users',App\Http\Controllers\UserController::class);
     Route::resource('citas', App\Http\Controllers\DateController::class);
-    Route::get('/profile',[App\Http\Controllers\UserController::class,'profile'] )->name('profile');
+    Route::view('profile', 'user.profile')->name('profile');
     Route::resource('pets',PetController::class);
     Route::resource('image',ImageController::class);
     Route::resource('role',RoleController::class);

@@ -178,6 +178,9 @@ return [
         //Spatie-Roles...
         Spatie\Permission\PermissionServiceProvider::class,
 
+        //DebugBar
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
@@ -233,6 +236,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];
