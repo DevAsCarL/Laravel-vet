@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ModifyUserRequest;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 use Spatie\Permission\Models\Role;
-
-use function Psy\debug;
 
 class UserController extends Controller
 {
@@ -20,8 +19,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $getUsers = User::all();
-        return view('user.index',compact('getUsers'));
+        return view('user.index');
     }
 
     public function create(Request $request)
@@ -40,16 +38,13 @@ class UserController extends Controller
     {
         $user->update($request->validated());
         $user->syncRoles($request -> role);
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->withSuccess('Actualizado correctamente');
     }
 
   
     public function update(UpdateUserRequest $request,User $user)
     {   
         $user->update($request->validated());
-
-       
-        
 
         if($request->image){
             $setImage = $request->file('image')->store('/public/images');
@@ -62,15 +57,9 @@ class UserController extends Controller
                 'url' => $url,
             ]);
         }
-
-
-        $getUsers = User::all();
+            return redirect()->back()->withSuccess('Actualizado correctamente');  
         
-        if($request->profile == '1'){
-            return redirect()->route('profile');   
-        }
-        
-        return view('user.index',compact('getUsers'));    
+
         
     }
 
@@ -84,9 +73,11 @@ class UserController extends Controller
         return view('user.index',compact('getUsers'));
     }
 
+    public function updatePassword(PasswordRequest $request,User $user){
 
-    public function profile(){
-  
-        return view('user.profile');
+        $user->update(['password' => bcrypt($request->password)]);
+
+        return back()->withSuccess('Actualizado correctamente');
     }
+
 }

@@ -180,6 +180,9 @@ return [
 
         //DebugBar
         Barryvdh\Debugbar\ServiceProvider::class,
+        
+        //SweetAlert-Laravel
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 
     ],
 
@@ -237,6 +240,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
     ],
 
 ];

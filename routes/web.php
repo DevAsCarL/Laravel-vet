@@ -7,6 +7,7 @@ use App\Http\Controllers\ManageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DateController;
+use App\Http\Controllers\UserController;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('users',App\Http\Controllers\UserController::class);
     Route::resource('citas', App\Http\Controllers\DateController::class);
     Route::view('profile', 'user.profile')->name('profile');
+    Route::put('password/{user}', [UserController::class,'updatePassword'])->name('password.change');
     Route::resource('pets',PetController::class);
     Route::resource('image',ImageController::class);
     Route::resource('role',RoleController::class);
@@ -81,7 +83,7 @@ Route::get('/google-callback', function () {
     ], [
         'url' => $user->avatar,
     ]);
-
+    $userNew->assignRole('Sin Rol');
     Auth::login($userNew); 
     return redirect('/home');
 
@@ -109,6 +111,7 @@ Route::get('/facebook-callback', function () {
     ], [
         'url' => $user->avatar,
     ]);
+    $userNew->assignRole('Sin Rol');
     Auth::login($userNew); 
     return redirect('/home');
 

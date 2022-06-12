@@ -3,19 +3,6 @@
 @section('title', 'Veterinaria')
 @section('content')
 
-    <section class="container-flex">
-        <div class="container rounded bg-white mt-5 mb-5">
-            @forelse ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-
-                    <strong>{{ $error }}</strong> Debes verificar el campo.
-                </div>
-            @empty
-            @endforelse
-        </div>
-    </section>
-
     <div class="card w-75 m-auto">
         <h4 class="card-title text-center mt-3">PERFIL</h4>
         <hr>
@@ -55,7 +42,8 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Número móvil</label>
-                                <input type="text" class="form-control" name="number" value="{{ auth()->user()->number }}">
+                                <input type="text" class="form-control" name="number"
+                                    value="{{ auth()->user()->number }}">
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Correo Electrónico</label>
@@ -64,13 +52,11 @@
                                 <input type="hidden" class="form-control" name="profile" value="1">
 
                             </div>
-                            <div class="row mt-5 text-center align-content-center ">
-                                <div class="col-sm-6 col-6">
-                                    <a href="{{ url('home') }}" class="btn btn-secondary">Atrás</a>
-                                </div>
-                                <div class="col-sm-6 col-6">
-                                    <button class="btn btn-primary " type="submit">Guardar</button>
-                                </div>
+                            <div class="row mt-5 d-flex flex-wrap-reverse gap-3">
+                                <a href="{{ url('home') }}" class="btn btn-secondary">Atrás</a>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#ModalPassword"
+                                    class="btn btn-warning" data-bs-dismiss="modal">Cambiar Contraseña</button>
+                                <button class="btn btn-primary " type="submit">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -89,7 +75,7 @@
                                     </button>
                                 @empty
                                 @endforelse
-                                </div>
+                            </div>
 
                             <div class="carousel-inner">
                                 @forelse (auth()->user()->pets as $pet)
@@ -129,7 +115,7 @@
 
 
 
-
+    {{-- MASCOTA --}}
 
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -159,4 +145,69 @@
 
     </div>
 
+    {{-- CONTRASEÑA --}}
+    <div class="modal fade" id="ModalPassword" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('password.change', auth()->id()) }}" method="post">
+                    @csrf
+                    @method('put')
+                    <div class="modal-body">
+                        @isset(auth()->user()->password)
+                            <label class="labels" for="currentPassword">Contraseña Actual</label>
+                            <input type="password" class="form-control" name="currentPassword" id="currentPassword">
+                        @endisset
+
+                        <label class="labels" for="newPassword">Nueva contraseña</label>
+                        <div class="row row-cols-2" id="passwordContainer">
+                            <span class="col-11">
+                                <input type="password" class="form-control" name="password" id="newPassword">
+                            </span>
+                            <button type="button" class="col-1 d-flex justify-content-center align-items-center" id="eye1">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <label class="labels col-12" for="repeatPassword">Confirmar contraseña</label>
+                            <span class="col-11">
+                                <input type="password" class="form-control" name="password_confirmation"
+                                    id="repeatPassword">
+                            </span>
+                            <button type="button" class="col-1 d-flex justify-content-center align-items-center" id="eye2">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-evenly">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
 @endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+
+            $('#eye1').click(function() {
+                showOrHide('#eye1>i', '#newPassword')
+            });
+            $('#eye2').click(function() {
+                showOrHide('#eye2>i', '#repeatPassword')
+            });
+
+            function showOrHide(icon, input) {
+                $(icon).toggleClass('fa-eye-slash');
+                $(input).attr('type') == 'password' ?
+                    $(input).attr('type', 'text') :
+                    $(input).attr('type', 'password');
+            }
+        });
+    </script>
+@stop
