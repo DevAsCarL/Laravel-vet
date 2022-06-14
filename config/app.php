@@ -177,9 +177,6 @@ return [
 
         //Spatie-Roles...
         Spatie\Permission\PermissionServiceProvider::class,
-
-        //DebugBar
-        Barryvdh\Debugbar\ServiceProvider::class,
         
         //SweetAlert-Laravel
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
