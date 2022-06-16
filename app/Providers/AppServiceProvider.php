@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        URL::forceScheme('https');
+        env('APP_ENV')=="production"?URL::forceScheme('https'):"";
         // Gate::before(function ($user, $ability) {
         //     return $user->hasRole('Super Admin') ? true : null;
         // });
