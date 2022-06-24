@@ -163,29 +163,30 @@
 
 @section('script')
 <script>
-    $(document).ready(function () {
+  document.addEventListener("DOMContentLoaded", function(){ 
 
-        const customerContainer = [...$('.customer__container').select()];
-        let value = 0;
+      const customerContainer = [...$('.customer__container').select()];
+      let value = 0;
 
-        $('#arrowRight').click(()=> { 
-            (value===customerContainer.length-1) ? value=0 : value++;
-            changeSlide(value);
-        
-        });
+      $('#arrowRight').click(()=> { 
+          (value===customerContainer.length-1) ? value=0 : value++;
+          changeSlide(value);
+      
+      });
 
-        $('#arrowLeft').click(()=> {    
-            (value===0) ? value=customerContainer.length-1 : value--;
-            changeSlide(value);
-        
-        });
+      $('#arrowLeft').click(()=> {    
+          (value===0) ? value=customerContainer.length-1 : value--;
+          changeSlide(value);
+      
+      });
 
-        function changeSlide(value) {
-            const currentContainer = $('.customer__container--activated').select();
+      function changeSlide(value) {
+          const currentContainer = $('.customer__container--activated').select();
 
-            $(currentContainer).removeClass('customer__container--activated');
-            $(customerContainer[value]).addClass('customer__container--activated');
-        }
-    });
+          $(currentContainer).removeClass('customer__container--activated');
+          $(customerContainer[value]).addClass('customer__container--activated');
+      }
+   })
+    
     </script>    
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Controllers\ManageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DateController;
+use App\Http\Controllers\Mail\SuscriberMailableController;
 use App\Http\Controllers\UserController;
 use App\Models\Image;
 use App\Models\User;
@@ -30,12 +31,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::view('user', 'user.store');
+Route::post('/mail/suscriber',[SuscriberMailableController::class,'getResponsetoAlert']);
 
 Route::resource('citas', DateController::class);
 
 Route::middleware('auth')->group(function () {
     
+    Route::view('user', 'user.store');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('users',App\Http\Controllers\UserController::class);
     

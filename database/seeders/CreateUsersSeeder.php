@@ -22,7 +22,7 @@ class CreateUsersSeeder extends Seeder
             'password'=>Hash::make('12345678')]);
         User::create(
             ['name'=>'Manuel',
-            'email'=>'carlos@hotmail.com',
+            'email'=>'carloscarbajalrojas@gmail.com',
             'number'=>'29999999',
             'password'=>bcrypt('12345678')]);
         User::create(

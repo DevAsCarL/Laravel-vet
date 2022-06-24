@@ -125,13 +125,15 @@
                 </div>
 
                 <div class="col-4 offset-1">
-                <form>
+                <form action="" method="post">
+                    @csrf
                     <h5>Suscribete para mas oferta</h5>
                     <p>Semanalmente contamos con ofertas especiales</p>
                     <div class="d-flex w-100 gap-2">
-                    <label for="newsletter1" class="visually-hidden">Correo</label>
-                    <input id="newsletter1" type="text" class="form-control" placeholder="Ingrese su correo">
-                    <button class="button button__special" type="button">Suscribir</button>
+                    <label for="mail" class="visually-hidden">Correo</label>
+                        <input id="mail" type="text" class="form-control" placeholder="Ingrese su correo" name="mail" required>
+                        <button id="btnSuscriber" class="button button__special" type="submit">Suscribir</button>
+                    </form>
                     </div>
                 </form>
                 </div>
@@ -150,9 +152,43 @@
     </div>
 
 </body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 @yield('script')
 @include('sweetalert::alert')
 @yield('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function (e) {
+
+        $('#btnSuscriber').click(function (e) { 
+            e.preventDefault();
+            
+            $.ajax({
+                type: "POST",
+                url: "{{url('/mail/suscriber')}}",
+                data: {
+                    mail: $('#mail').val(),
+                    _token: $('[name=_token]').val(),
+                },
+                dataType: "json",
+                success: function (response) {
+                    swal(response.alert,response.message)
+                },
+                error: function(response,status){
+                    swal(status,response.responseJSON.errors.mail)
+                },  
+            })
+        });
+        function swal(alert,message) {
+            Swal.fire({
+                toast:true,
+                position:'top',
+                showCloseButton:true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: alert,
+                title: message
+            })
+        };
+    })
+</script>
 </html>

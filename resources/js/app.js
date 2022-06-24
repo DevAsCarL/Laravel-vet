@@ -1,3 +1,3 @@
 require('./bootstrap');
-
-// window.Swal = require('sweetalert2');
+window.$ = require('jquery');
+window.Swal = require('sweetalert2');
