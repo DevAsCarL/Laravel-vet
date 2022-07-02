@@ -381,7 +381,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js',
+                    'location' => 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
@@ -398,11 +398,11 @@ return [
                     'asset' => false,
                     'location' => 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js',
                 ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
-                ],
+                // [
+                //     'type' => 'js',
+                //     'asset' => false,
+                //     'location' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
+                // ],
                 [
                     'type' => 'css',
                     'asset' => false,

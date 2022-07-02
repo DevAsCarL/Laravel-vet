@@ -41,54 +41,22 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {  
-        
         $request->validate([
             'name' => 'required',
         ]);
 
-        Role::create([
+        $newRole = Role::create([
             'name' => $request->name
         ]);
-        $role = Role::findbyName($request->name);
-    
-        $role->syncPermissions($request->id);
-       
-        $permissions = Permission::all();
-        return view('role.index',compact('permissions'));
+        $newRole->syncPermissions($request->id);
+        return redirect()->route('role.index')->withSuccess('Creado correctamente');
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Role $role)
-    {   $allPermissions = Permission::all();
-        $rolePermissions = $role->getAllPermissions();
-        $noPermissions = $allPermissions->diff($rolePermissions);
+    {   
 
-        foreach ($rolePermissions as $rolePermission){
-           Arr::add($rolePermission,'checkbox','checked');
-        }
-
-        $allPermissions = $rolePermissions->concat($noPermissions);
-
-        $allPermissions = $allPermissions->sort();
-        
-
+        $allPermissions = Permission::all();
         return view('role.edit',compact('role','allPermissions'));
     }
 
@@ -100,20 +68,10 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Role $role)
-    {
+    {  
+        $request->validate(['permissions' => 'array|between:0,'.Permission::count()]);
         $role->syncPermissions($request->permissions);
-        $allPermissions = Permission::all();
-        $rolePermissions = $role->getAllPermissions();
-        $noPermissions = $allPermissions->diff($rolePermissions);
-
-        foreach ($rolePermissions as $rolePermission){
-           Arr::add($rolePermission,'checkbox','checked');
-        }
-
-        $allPermissions = $rolePermissions->concat($noPermissions);
-        $allPermissions->sort();
-       
-        return view('role.edit',compact('role','allPermissions'));
+        return redirect()->route('role.edit',$role->id)->withSuccess('Actualizado correctamente');
 
     }
 
@@ -126,7 +84,6 @@ class RoleController extends Controller
     public function destroy($id)
     {
         Role::destroy($id);
-        $permissions = Permission::all();
-        return view('role.index',compact('permissions'));
+        return redirect()->route('role.index')->withSuccess('Eliminado correctamente');
     }
 }
