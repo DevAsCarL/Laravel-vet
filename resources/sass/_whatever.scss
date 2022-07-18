@@ -39,17 +39,16 @@
     filter:contrast(200%);
 }
 
-
+//button date pet reservation
 
 input[type="radio"]{
-    /* position:absolute; */
-    opacity: 1;
-   
-    
+    position:absolute; 
+    opacity: 0;
+     
 }
-.collapse input[type="radio"]:checked + label{ 
-    background-color: var(--tertiaryColor);
-    color:var(--primaryColor);
+.radio-schedule:checked + label{
+  background-color: black;
+  color:white;
 }
 
 /* Separator  */

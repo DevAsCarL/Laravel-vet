@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Auth\LoginController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PetController;
@@ -77,18 +79,17 @@ Route::get('/google-callback', function () {
         'email' => $user->email,
         'external_auth' => 'google',
     ]);
-    
-    // dd($userNew->id);
     Image::updateOrCreate([
         'imageable_id' => $userNew->id,
         'imageable_type' => 'App\Models\User'
     ], [
         'url' => $user->avatar,
     ]);
-    $userNew->assignRole('Sin Rol');
+    $userNew->hasAnyRole()?$userNew->assignRole('Sin Rol'):'';
     Auth::login($userNew); 
-    return redirect('/home');
 
+    $redirect = new LoginController;
+    return redirect($redirect->redirectPath());
 });
 
 
@@ -113,8 +114,9 @@ Route::get('/facebook-callback', function () {
     ], [
         'url' => $user->avatar,
     ]);
-    $userNew->assignRole('Sin Rol');
+    $userNew->hasAnyRole()?$userNew->assignRole('Sin Rol'):'';
     Auth::login($userNew); 
-    return redirect('/home');
+    $redirect = new LoginController;
+    return redirect($redirect->redirectPath());
 
 });

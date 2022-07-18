@@ -15,11 +15,14 @@ class CreateDatesTable extends Migration
     {
         Schema::create('dates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade')->onUpdate('cascade');
+            $table->dateTime('reserved_at');
+            $table->string('description');
+            $table->string('client_id');
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade')->onUpdate('cascade');
-            $table->date('reserved_at');
-            $table->string('status',1);
+            $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('schedule_id')->constrained('schedules')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('title');
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     {{-- <link rel="stylesheet" href="{{asset('css/normalize.css')}}"> --}}
-
+@yield('css')
     {{-- Media --}}
     <svg style="display: none;">
         <symbol id="bootstrap" viewBox="0 0 118 94">
@@ -78,7 +78,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                                     <a href="{{ route('profile') }}" class="dropdown-item">
-                                        Profile
+                                        Perfil
                                     </a>
                                     </a>
                                     <a class="dropdown-item" href="{{ route('manage.index') }}"

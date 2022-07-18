@@ -15,6 +15,7 @@ class DateHasServicesTable extends Migration
     {
        Schema::create('date_has_services', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('date_id')->constrained('dates')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

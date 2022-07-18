@@ -6,7 +6,7 @@ use App\Models\Date;
 use App\Models\Schedule;
 use App\Models\Service;
 use App\Models\User;
-use Carbon\Carbon;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -18,11 +18,12 @@ class DateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $request = Schedule::all();
-        // return response()->json($request);
-        return response(json_encode($request),200);
+        $events = Date::all('reserved_at','title'); 
+        // return $events;  
+        // return response()->json($events, 200 );
+        return $events;
     }
     
 
@@ -32,18 +33,10 @@ class DateController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-
-
-    {  
-        //  $time = Carbon::createFromTime(15,0,0);
-        // return $time;
-        $getServices = Service::all();
-        $getPets = User::find(Auth::id())->pets;
-        $day = Carbon::today();
-        $day1 = $day->isoFormat('dddd DD');
-        $day2 = $day->addDays(1)->isoformat('dddd DD');
-        $day3 = $day->addDays(1)->isoFormat('dddd DD');
-        return view('date.create',compact('getServices','getPets','day1','day2','day3'));
+    {          
+        $veterinaryUsers = User::role('Veterinario')->get();
+        $getServices = Service::all();       
+        return view('date.create',compact('getServices','veterinaryUsers'));
     }
 
     /**
@@ -53,17 +46,15 @@ class DateController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        return $request;
-        // $request->validate([
-        //     'mascota' => 'required',
-        //     'hour' => 'required|time',
-        // ]);
-
-        Date::create([
-            'service' => $request->servicio,
-            'date' => $request->fecha
-        ]);
+    {   
+        $time = Schedule::find($request->schedule_id)->start;
+        $request->reserved_at = date('Y-m-d H:i:s',strtotime($request->reserved_at.' '.$time));
+        $data = $request->except('_token','reserved_at');
+        $data['reserved_at'] = $request->reserved_at;
+        $data['title'] = 'reservado';
+        $data['client_id'] = Auth::id();
+        Date::create($data);
+        return redirect()->route('citas.create')->withSuccess('Reservado con exito');   
     }
 
     /**
@@ -72,9 +63,11 @@ class DateController extends Controller
      * @param  \App\Models\Date  $date
      * @return \Illuminate\Http\Response
      */
-    public function show(Date $date)
+    public function show(User $cita,Request $request)
     {
-        //
+        $vet = $cita->dates()->whereDate('reserved_at',$request->date)->get();
+        $schedule = Schedule::all();
+        return [$vet,$schedule];
     }
 
     /**

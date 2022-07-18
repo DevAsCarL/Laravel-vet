@@ -30,6 +30,10 @@ class LoginController extends Controller
      */
     public function redirectPath()
     {  
+        if (session('url.intended')) {
+            return session('url.intended');
+        }
+
         switch (Auth::user()->getRoleNames()->first()) {
             case 'Admin': case 'Super Admin':
                 return 'manage';

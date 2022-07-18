@@ -193,7 +193,7 @@
 @endsection
 @section('js')
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', ev => {
 
             $('#eye1').click(function() {
                 showOrHide('#eye1>i', '#newPassword')

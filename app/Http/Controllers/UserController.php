@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
@@ -34,8 +35,11 @@ class UserController extends Controller
     }
 
     public function edit(ModifyUserRequest $request,User $user)
-    {
-        $user->update($request->validated());
+    {   
+        if (Hash::needsRehash($request->password)) {
+            $request->password = bcrypt($request->password);
+        }
+        $user->update([$request->validated(),'password'=>$request->password]);
         $user->syncRoles($request -> role);
         return redirect()->route('users.index')->withSuccess('Actualizado correctamente');
     }
@@ -43,7 +47,10 @@ class UserController extends Controller
   
     public function update(UpdateUserRequest $request,User $user)
     {   
-        $user->update($request->validated());
+        if (Hash::needsRehash($request->password)) {
+            $request->password = bcrypt($request->password);
+        }
+        $user->update([$request->validated(),'password'=>$request->password]);
 
         if($request->image){
             $setImage = $request->file('image')->store('/public/images');
