@@ -35,10 +35,12 @@ Auth::routes();
 
 Route::post('/mail/suscriber',[SuscriberMailableController::class,'getResponsetoAlert']);
 
-Route::resource('citas', DateController::class);
+Route::get('reservar',[DateController::class,'showCalendar']);
+
 
 Route::middleware('auth')->group(function () {
-    
+    Route::resource('citas', DateController::class);
+    Route::get('mostrar',[DateController::class,'showDate']);
     Route::view('user', 'user.store');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('users',App\Http\Controllers\UserController::class);

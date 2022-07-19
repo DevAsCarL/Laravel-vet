@@ -126,7 +126,7 @@
                     today: 'hoy'
                 },
                 eventSources: [{
-                    url: "{{ url('citas') }}",
+                    url: "{{ url('reservar') }}",
                     method: 'get',
                     failure: function() {
                         alert('Ocurrio un error con los datos Fullcalendar!');

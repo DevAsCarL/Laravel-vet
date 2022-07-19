@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Date;
+use App\Models\Pet;
 use App\Models\Schedule;
 use App\Models\Service;
 use App\Models\User;
-use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
 
 class DateController extends Controller
 {
@@ -17,15 +16,41 @@ class DateController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 
+     * 
      */
+    public function showDate(Request $request)
+    {
+        if ($request->ajax()) {
+            [$date, $time] = explode('T', $request->date);
+            [$time,] = explode('-', $time);
+            $date = Date::where('user_id', Auth::id())
+                ->whereDate('reserved_at', $date)
+                ->whereTime('reserved_at', $time)
+                ->first();
+            $client = User::find($date->client_id);
+            $pet = Pet::find($date->pet_id);
+            $service = Service::find($date->service_id);
+            return [$date, $client,$pet,$service];
+        }
+        return redirect()->back();
+    }
+
+
+    public function showCalendar()
+    {
+        return Date::all();
+    }
+
+
+
     public function index()
     {
-        $events = Date::all('reserved_at','title'); 
-        // return $events;  
-        // return response()->json($events, 200 );
-        return $events;
+        $reserved = Auth::user()->dates()->get(['reserved_at', 'title'])->toJson();
+        // return $reserved;
+        return view('date.index', compact('reserved'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -33,10 +58,10 @@ class DateController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {          
+    {
         $veterinaryUsers = User::role('Veterinario')->get();
-        $getServices = Service::all();       
-        return view('date.create',compact('getServices','veterinaryUsers'));
+        $getServices = Service::all();
+        return view('date.create', compact('getServices', 'veterinaryUsers'));
     }
 
     /**
@@ -47,14 +72,24 @@ class DateController extends Controller
      */
     public function store(Request $request)
     {   
+        // return request()->pet_id;
+        $request->validate([
+            'reserved_at' => 'required|unique:dates,reserved_at',
+            'pet_id' => 'required|exists:pets,id,user_id,'.auth()->id(),
+            'service_id' => 'numeric|required|exists:services,id',
+            'user_id' => 'numeric|required|exists:users,id',
+            'description' => 'alpha|required',
+            'schedule_id' => 'numeric|required|exists:schedules,id'
+        ]);
+        
         $time = Schedule::find($request->schedule_id)->start;
-        $request->reserved_at = date('Y-m-d H:i:s',strtotime($request->reserved_at.' '.$time));
-        $data = $request->except('_token','reserved_at');
+        $request->reserved_at = date('Y-m-d H:i:s', strtotime($request->reserved_at . ' ' . $time));
+        $data = $request->except('_token', 'reserved_at');
         $data['reserved_at'] = $request->reserved_at;
         $data['title'] = 'reservado';
         $data['client_id'] = Auth::id();
         Date::create($data);
-        return redirect()->route('citas.create')->withSuccess('Reservado con exito');   
+        return redirect()->route('citas.create')->withSuccess('Reservado con exito');
     }
 
     /**
@@ -63,43 +98,17 @@ class DateController extends Controller
      * @param  \App\Models\Date  $date
      * @return \Illuminate\Http\Response
      */
-    public function show(User $cita,Request $request)
+    public function show(User $cita, Request $request)
     {
-        $vet = $cita->dates()->whereDate('reserved_at',$request->date)->get();
-        $schedule = Schedule::all();
-        return [$vet,$schedule];
+        if ($request->ajax()) {
+            $vet = $cita->dates()->whereDate('reserved_at', $request->date)->get();
+            $schedule = Schedule::all();
+            return [$vet, $schedule];
+        }
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Date  $date
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Date $date)
-    {   
-        $data = "Hola";
-        return $data;
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Date  $date
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Date $date)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Date  $date
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Date $date)
     {
         //

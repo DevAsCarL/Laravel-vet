@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -259,11 +259,11 @@ return [
             'route'  => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+        // [
+        //     'text' => 'change_password',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         // [
         //     'text'    => 'multilevel',
         //     'icon'    => 'fas fa-fw fa-share',
@@ -308,6 +308,7 @@ return [
             'text'       => 'Usuarios',
             'icon_color' => 'silver',
             'route'        => 'users.index',
+            'can' => 'show users'
         ],
         [
             'icon' => 'fas fa-bars',
@@ -325,13 +326,13 @@ return [
             'icon' => 'fas fa-calendar-plus',
             'text'       => 'Servicios',
             'icon_color' => 'silver',
-            'url'        => '',
+            'route'        => 'service.index',
         ],
         [   
             'icon' => 'fas fa-calendar-day',
             'text'       => 'Citas',
             'icon_color' => 'silver',
-            'url'        => '',
+            'route'        => 'citas.index',
         ],
     ],
 
