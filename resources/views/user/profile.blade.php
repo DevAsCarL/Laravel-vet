@@ -81,7 +81,7 @@
                                 @forelse (auth()->user()->pets as $pet)
                                     <div class="carousel-item @if ($loop->first) active @endif"
                                         data-bs-interval="2000">
-                                        <img src="{{ asset($pet->image->url) }}" class="img-fluid d-block w-100"
+                                        <img src="{{ asset($pet->image->url??'https://images.unsplash.com/photo-1540183093623-1b8b10ae353f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80') }}" class="img-fluid d-block w-100"
                                             style="object-fit:cover; height:200px">
                                     </div>
                                 @empty

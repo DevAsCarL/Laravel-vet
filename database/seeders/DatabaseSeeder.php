@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
         ->create();
 
         $this->call(RolesAndPermissionsSeeder::class);
-        $this->call(CreateUsersSeeder::class);
         $this->call(CreateServicesSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(ScheduleSeeder::class);
+        $this->call(CreateUsersSeeder::class);
     }
 }
