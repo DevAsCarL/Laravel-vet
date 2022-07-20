@@ -315,24 +315,28 @@ return [
             'text'       => 'Roles',
             'icon_color' => 'silver',
             'route'        => 'role.index',
+            'can' => 'show roles'
         ],
         [
             'icon' => 'fas fa-paw',
             'text'       => 'Mascotas',
             'icon_color' => 'silver',
             'route'        => 'pets.index',
+            'can' => 'show pets'
         ],
         [   
             'icon' => 'fas fa-calendar-plus',
             'text'       => 'Servicios',
             'icon_color' => 'silver',
             'route'        => 'service.index',
+            'can' => 'show services'
         ],
         [   
             'icon' => 'fas fa-calendar-day',
             'text'       => 'Citas',
             'icon_color' => 'silver',
             'route'        => 'citas.index',
+            'can' => 'show dates'
         ],
     ],
 

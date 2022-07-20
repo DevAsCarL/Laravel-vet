@@ -12,13 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class DateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     * 
-     * 
-     */
+   public function __construct() {
+    $this->middleware('can:show dates')->only(['index']);
+   }
     public function showDate(Request $request)
     {
         if ($request->ajax()) {

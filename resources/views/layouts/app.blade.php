@@ -105,11 +105,14 @@
                                         {{ __('Profile') }}
                                     </a>
                                     </a>
+                                    @can('show dates')  
                                     <a class="dropdown-item" href="{{ route('manage.index') }}"
                                         onclick="event.preventDefault();
                                         document.getElementById('manage-form').submit();">
                                         {{ __('Manage') }}
                                     </a>
+                                    @endcan
+                                    
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
@@ -119,10 +122,12 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                    @can('show dates')                              
                                     <form id="manage-form" action="{{ route('manage.index') }}" method="get"
                                         class="d-none">
                                         @csrf
                                     </form>
+                                    @endcan
 
 
                                 </div>

@@ -45,7 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('users',App\Http\Controllers\UserController::class);
     
-    Route::resource('manage', ManageController::class);
     Route::resource('users',App\Http\Controllers\UserController::class);
     Route::resource('citas', App\Http\Controllers\DateController::class);
     Route::view('profile', 'user.profile')->name('profile');
@@ -55,14 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('role',RoleController::class);
     Route::resource('service',ServiceController::class);
     //index datatables
-    Route::get('Datatable/users',[DatatableController::class,'users'])->name('datatable.users');
-    Route::get('Datatable/roles',[DatatableController::class,'roles'])->name('datatable.roles');
-    Route::get('Datatable/pets',[DatatableController::class,'pets'])->name('datatable.pets');
-    Route::get('Datatable/services',[DatatableController::class,'services'])->name('datatable.services');
-    Route::get('Datatable/dates',[DatatableController::class,'dates'])->name('datatable.dates');
-   
-    //modales datatables
-    Route::get('Datatable/pet',[DatatableController::class,'pet'])->name('datatable.pet');
+    Route::middleware('can:show dates')->group(function () {
+        Route::resource('manage', ManageController::class);
+        Route::get('Datatable/users',[DatatableController::class,'users'])->name('datatable.users');
+        Route::get('Datatable/roles',[DatatableController::class,'roles'])->name('datatable.roles');
+        Route::get('Datatable/pets',[DatatableController::class,'pets'])->name('datatable.pets');
+        Route::get('Datatable/services',[DatatableController::class,'services'])->name('datatable.services');
+        Route::get('Datatable/dates',[DatatableController::class,'dates'])->name('datatable.dates');
+       
+        //modales datatables
+        Route::get('Datatable/pet',[DatatableController::class,'pet'])->name('datatable.pet');
+    });
 });
 
 

@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct() {
+        $this->middleware('can:show services')->only('index');
+        $this->middleware('can:create service')->only('create');
+        $this->middleware('can:edit service')->only(['edit','update']);
+        $this->middleware('can:delete service')->only(['delete']);
+    }
     public function index()
     {
         return view('service.index');
