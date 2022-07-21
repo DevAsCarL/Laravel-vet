@@ -11,15 +11,8 @@
     <title>@yield('title')</title>
 
     <!-- Scripts -->
-<<<<<<< HEAD
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-=======
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="{{ asset('js/app.js') }}" ></script>
-
->>>>>>> 32a3e17cb1b1fae57fdfa41fb9925b16048574b7
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
