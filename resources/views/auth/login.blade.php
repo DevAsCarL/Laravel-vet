@@ -8,7 +8,29 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Login') }}</div>
+                    <button class="btn btn-primary text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">VER USUARIOS CON ROLES - DEMO</button>
 
+                    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Ver Usuarios con roles - DEMO</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="mb-3">
+                          <label for="user1" class="form-label">Veterinario</label>
+                          <input type="text" class="form-control" name="" id="user1" aria-describedby="helpId" value="veterinario@vet.com">
+                          <small id="helpId" class="form-text text-info">Usuario</small>
+                          <input type="text" class="form-control" name="" id="user" aria-describedby="helpId" value="veterinario@vet.com">
+                          <small id="helpId2" class="form-text text-info">Contraseña</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="user2" class="form-label">Admin</label>
+                            <input type="text" class="form-control" name="" id="user2" aria-describedby="helpId" value="admin@admin.gmail">
+                            <small id="helpId" class="form-text text-info">Usuario</small>
+                            <input type="text" class="form-control" name="" id="user12" aria-describedby="helpId" value="admin@admin.gmail">
+                            <small id="helpId2" class="form-text text-info">Contraseña</small></div>
+                    </div>
+                    </div>
                     <div class="card-body">
                         <div class="row row-cols-12">
                             <form method="POST" action="{{ route('login') }}"  class="col-8">
