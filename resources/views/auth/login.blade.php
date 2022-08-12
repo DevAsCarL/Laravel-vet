@@ -25,9 +25,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="user2" class="form-label">Admin</label>
-                            <input type="text" class="form-control" name="" id="user2" aria-describedby="helpId" value="admin@admin.gmail">
+                            <input type="text" class="form-control" name="" id="user2" aria-describedby="helpId" value="admin@admin.com">
                             <small id="helpId" class="form-text text-info">Usuario</small>
-                            <input type="text" class="form-control" name="" id="user12" aria-describedby="helpId" value="admin@admin.gmail">
+                            <input type="text" class="form-control" name="" id="user12" aria-describedby="helpId" value="admin@admin.com">
                             <small id="helpId2" class="form-text text-info">Contraseña</small></div>
                     </div>
                     </div>
